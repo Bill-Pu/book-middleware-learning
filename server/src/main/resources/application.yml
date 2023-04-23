@@ -1,0 +1,4 @@
+server:
+  port: 8088
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
