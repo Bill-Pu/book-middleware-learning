@@ -1,8 +1,12 @@
 package com.learning.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * @Author PYB
@@ -12,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class TestController {
+    @Resource
+    private RedisTemplate redisTemplate;
     @RequestMapping("test")
+    @PostConstruct
     public void test(){
-        log.info("test");
-        log.debug("test");
-        log.error("test");
+        redisTemplate.opsForValue().set("test","test");
+        Object test = redisTemplate.opsForValue().get("test");
+        System.out.println(test.toString());
+
     }
 }
