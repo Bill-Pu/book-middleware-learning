@@ -19,7 +19,6 @@ public class TestController {
     @Resource
     private RedisTemplate redisTemplate;
     @RequestMapping("test")
-    @PostConstruct
     public void test(){
         redisTemplate.opsForValue().set("test","test");
         Object test = redisTemplate.opsForValue().get("test");
