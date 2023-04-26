@@ -2,6 +2,7 @@ package com.learning.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,10 +20,13 @@ public class TestController {
     @Resource
     private RedisTemplate redisTemplate;
     @RequestMapping("test")
-    public void test(){
+    @PreAuthorize("hasAuthority('test')")
+
+    public String test(){
         redisTemplate.opsForValue().set("test","test");
         Object test = redisTemplate.opsForValue().get("test");
         System.out.println(test.toString());
+        return test.toString();
 
     }
 }

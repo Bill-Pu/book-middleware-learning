@@ -30,20 +30,20 @@ public class LoginUser implements UserDetails {
     private List<SimpleGrantedAuthority> authorities;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-//        if(authorities!=null){
-//            return authorities;
+//        return null;
+        if(authorities!=null){
+            return authorities;
+        }
+        //把permissions中String类型的权限信息封装成SimpleGrantedAuthority对象
+//       authorities = new ArrayList<>();
+//        for (String permission : permissions) {
+//            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permission);
+//            authorities.add(authority);
 //        }
-//        //把permissions中String类型的权限信息封装成SimpleGrantedAuthority对象
-////       authorities = new ArrayList<>();
-////        for (String permission : permissions) {
-////            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(permission);
-////            authorities.add(authority);
-////        }
-//        authorities = permissions.stream()
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
-//        return authorities;
+        authorities = permissions.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override
