@@ -34,6 +34,11 @@ public class Test1 {
     public void test1(){
         redisTemplate.opsForValue().set("name","张三");
         redisTemplate.opsForValue().set("age","18");
+        User user = new User();
+        user.setId(1L);
+        user.setUserName("张三");
+        redisTemplate.opsForValue().set("user:demo:1",user);
+
         System.out.println(redisTemplate.opsForValue().get("name"));
     }
     @Test

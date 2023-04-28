@@ -1,4 +1,4 @@
-package org.javaboy.tienchin.framework.config;
+package com.learning.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
