@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learning.ServerApplication;
 import com.learning.entity.User;
 import com.learning.service.UserService;
@@ -47,18 +49,23 @@ public class Test1 {
         System.out.println(byId.toString());
     }
     @Test
-    public void test3(){
+    public void test3() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
         User user = new User();
         user.setId(1L);
         user.setUserName("张三");
-        redisCache.setCacheObject("user",user);
-        Object user1 = redisCache.getCacheObject("user");
+        String s = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
+        User user1 = objectMapper.readValue(s, User.class);
         System.out.println();
     }
     @Test
     public void test4(){
         String encode = encodedKeySpec.encode("123");
         System.out.println(encode);
+    }
+    @Test
+    public void test5(){
+
     }
 
 }

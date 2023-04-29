@@ -47,6 +47,7 @@ public class SecurityConfig  {
                 .and()
                 .authorizeRequests(auth ->
                         auth.antMatchers("/user/login").permitAll()
+                                .antMatchers("/user/register").permitAll()
                                 .anyRequest().authenticated()
                 ).addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class).build();
 //                .userDetailsService(userDetailsService).build();
