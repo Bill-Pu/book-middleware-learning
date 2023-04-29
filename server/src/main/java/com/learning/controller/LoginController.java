@@ -27,4 +27,8 @@ public class LoginController {
     public ResponseResult logOut(){
         return loginService.logout();
     }
+    @RequestMapping("/register")
+    public ResponseResult register(@RequestBody User user){
+        return loginService.register(user);
+    }
 }

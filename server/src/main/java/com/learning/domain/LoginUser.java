@@ -1,6 +1,8 @@
 package com.learning.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.learning.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +18,10 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class LoginUser implements UserDetails {
 
+    private static final long serialVersionUID = -8790704366917306400L;
     private User user;
 
     private List<String> permissions;
@@ -26,9 +30,11 @@ public class LoginUser implements UserDetails {
         this.user = user;
         this.permissions = permissions;
     }
-    @JSONField(serialize = false)
+
     private List<SimpleGrantedAuthority> authorities;
     @Override
+    @JsonIgnore
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return null;
         if(authorities!=null){

@@ -1,5 +1,6 @@
 package com.learning.service.impl;
 
+import com.learning.dao.UserMapper;
 import com.learning.domain.LoginUser;
 import com.learning.domain.ResponseResult;
 import com.learning.entity.User;
@@ -7,12 +8,15 @@ import com.learning.service.LoginService;
 import com.learning.utils.JwtUtil;
 import com.learning.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 
 /**
@@ -54,5 +58,18 @@ public class LoginServiceImpl implements LoginService {
         Long userid = loginUser.getUser().getId();
         redisCache.deleteObject("login:"+userid);
         return new ResponseResult(200,"退出成功");
+    }
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private PasswordEncoder encodedKeySpec;
+    @Override
+    public ResponseResult register(User user) {
+
+        user.setPassword(encodedKeySpec.encode(user.getPassword()));
+        userMapper.insert(user);
+        Long id = user.getId();
+        userMapper.setUserRole(id,1);
+        return new ResponseResult(200,"注册成功");
     }
 }
