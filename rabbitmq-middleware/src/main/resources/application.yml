@@ -1,8 +1,24 @@
 server:
   port: 8098
   servlet:
-    context-path: /middle/ware
+    context-path: /rabbit
 spring:
+  rabbitmq:
+    host: 101.43.244.29
+    port: 5673
+    username: guest
+    password: guest
+      #这个配置是保证提供者确保消息推送到交换机中，不管成不成功，都会回调
+    publisher-confirm-type: correlated
+      #保证交换机能把消息推送到队列中
+    publisher-returns: true
+    virtual-host: /
+      #这个配置是保证消费者会消费消息，手动确认
+    listener:
+      simple:
+        acknowledge-mode: manual
+    template:
+      mandatory: true
   redis:
     host: 101.43.244.29
     port: 6379  #可不配，因为底层默认值为6379
@@ -23,3 +39,4 @@ mybatis-plus:
     use-generated-keys: true
     default-executor-type: REUSE
     use-actual-param-name: true
+
