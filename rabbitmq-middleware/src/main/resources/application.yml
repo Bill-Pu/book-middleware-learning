@@ -1,0 +1,25 @@
+server:
+  port: 8098
+  servlet:
+    context-path: /middle/ware
+spring:
+  redis:
+    host: 101.43.244.29
+    port: 6379  #可不配，因为底层默认值为6379
+#    Auth: 1234
+    password: 1234
+    database: 0
+    timeout: 10000ms
+  datasource:
+    url: jdbc:mysql://101.43.244.29:3306/middle_ware?useSSL=false&autoReconnect=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+mybatis-plus:
+  configuration:
+      ### 开启打印sql配置
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    use-generated-keys: true
+    default-executor-type: REUSE
+    use-actual-param-name: true

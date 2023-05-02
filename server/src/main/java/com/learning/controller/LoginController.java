@@ -2,7 +2,7 @@ package com.learning.controller;
 
 import com.learning.domain.ResponseResult;
 import com.learning.entity.User;
-import com.learning.service.LoginService;
+import com.learning.service.user.LoginService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

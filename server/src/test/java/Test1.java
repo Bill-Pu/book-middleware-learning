@@ -2,7 +2,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.learning.ServerApplication;
 import com.learning.entity.User;
-import com.learning.service.UserService;
+import com.learning.service.user.UserService;
 import com.learning.utils.RedisCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.security.spec.EncodedKeySpec;
 
 
 /**
@@ -65,7 +64,14 @@ public class Test1 {
     }
     @Test
     public void test5(){
+//        redisTemplate.opsForValue().setIfAbsent()
+        User user = new User();
+        user.setUserName("John");
+        user.setPassword("123");
+        userService.save(user);
 
+        User byId = userService.getById(user.getId());
+        System.out.println();
     }
 
 }
