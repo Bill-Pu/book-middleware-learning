@@ -1,9 +1,9 @@
-package com.learning.service.impl;
+package com.learning.service.user.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.learning.dao.SysMenuDao;
 import com.learning.entity.Menu;
-import com.learning.service.SysMenuService;
+import com.learning.service.user.SysMenuService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -17,6 +17,7 @@
         <module>api</module>
         <module>model</module>
         <module>server</module>
+        <module>rabbitmq-middleware</module>
     </modules>
 
     <properties>

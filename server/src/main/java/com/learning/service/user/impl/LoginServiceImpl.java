@@ -1,14 +1,14 @@
-package com.learning.service.impl;
+package com.learning.service.user.impl;
 
 import com.learning.dao.UserMapper;
 import com.learning.domain.LoginUser;
 import com.learning.domain.ResponseResult;
 import com.learning.entity.User;
-import com.learning.service.LoginService;
+import com.learning.service.user.LoginService;
+import com.learning.service.user.UserService;
 import com.learning.utils.JwtUtil;
 import com.learning.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,12 +62,13 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
     @Resource
+    private UserService userService;
+    @Resource
     private PasswordEncoder encodedKeySpec;
     @Override
     public ResponseResult register(User user) {
-
         user.setPassword(encodedKeySpec.encode(user.getPassword()));
-        userMapper.insert(user);
+        userService.putANewUser(user);
         Long id = user.getId();
         userMapper.setUserRole(id,1);
         return new ResponseResult(200,"注册成功");

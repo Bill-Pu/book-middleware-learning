@@ -1,4 +1,4 @@
-package com.learning.service;
+package com.learning.service.user;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.learning.entity.Menu;

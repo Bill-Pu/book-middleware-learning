@@ -1,4 +1,4 @@
-package com.learning.service;
+package com.learning.service.user;
 
 import com.learning.domain.ResponseResult;
 import com.learning.entity.User;

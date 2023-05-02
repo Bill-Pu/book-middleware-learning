@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper extends BaseMapper<User> {
     void setUserRole(@Param("id") Long id, @Param("i") int i);
+    void putANewUser(User user);
 }
