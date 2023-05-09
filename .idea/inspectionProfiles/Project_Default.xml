@@ -35,6 +35,13 @@
     <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ADDITIONAL_TAGS" value="date" />
     </inspection_tool>
+    <inspection_tool class="MavenPackageUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="org.redisson:redisson-spring-boot-starter" />
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="MissingJavadoc" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="PACKAGE_SETTINGS">
         <Options>
@@ -67,6 +74,12 @@
           <option name="ENABLED" value="false" />
         </Options>
       </option>
+    </inspection_tool>
+    <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoreAnonymousInnerClasses" value="false" />
+      <option name="superClassString" value="java.awt.Component" />
     </inspection_tool>
     <inspection_tool class="SpringJavaInjectionPointsAutowiringInspection" enabled="false" level="ERROR" enabled_by_default="false" />
   </profile>
