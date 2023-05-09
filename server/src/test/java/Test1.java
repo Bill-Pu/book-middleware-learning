@@ -6,6 +6,7 @@ import com.learning.service.user.UserService;
 import com.learning.utils.RedisCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,9 @@ import javax.annotation.Resource;
 @SpringBootTest(classes = ServerApplication.class)
 
 public class Test1 {
+    public static void main(String[] args) {
+        System.out.println("Welcome to SWUST collegiate programming contest!");
+    }
     @Resource
     private PasswordEncoder encodedKeySpec;
     @Resource
@@ -31,6 +35,8 @@ public class Test1 {
     private UserService userService;
     @Resource
     private RedisCache redisCache;
+    @Resource
+    private RedissonClient redissonClient;
     @Test
     public void test1(){
         redisTemplate.opsForValue().set("name","张三");
@@ -72,6 +78,12 @@ public class Test1 {
 
         User byId = userService.getById(user.getId());
         System.out.println();
+    }
+    @Test
+    public void test6() throws Exception {
+        String s = redissonClient.getConfig().toString();
+        System.out.println(s
+        );
     }
 
 }

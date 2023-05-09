@@ -3,6 +3,22 @@ server:
   servlet:
     context-path: /middle/ware
 spring:
+  rabbitmq:
+    host: 101.43.244.29
+    port: 5673
+    username: guest
+    password: guest
+    #这个配置是保证提供者确保消息推送到交换机中，不管成不成功，都会回调
+    publisher-confirm-type: correlated
+    #保证交换机能把消息推送到队列中
+    publisher-returns: true
+    virtual-host: /
+    #这个配置是保证消费者会消费消息，手动确认
+    listener:
+      simple:
+        acknowledge-mode: manual
+    template:
+      mandatory: true
   redis:
     host: 101.43.244.29
     port: 6379  #可不配，因为底层默认值为6379
@@ -10,6 +26,27 @@ spring:
     password: 1234
     database: 0
     timeout: 10000ms
+    redisson:
+      config: |
+        singleServerConfig:
+          idleConnectionTimeout: 10000
+          connectTimeout: 10000
+          timeout: 3000
+          retryAttempts: 3
+          retryInterval: 1500
+          password: 1234
+          subscriptionsPerConnection: 5
+          clientName: null
+          address: "redis://101.43.244.29:6379"
+          subscriptionConnectionMinimumIdleSize: 1
+          subscriptionConnectionPoolSize: 50
+          connectionMinimumIdleSize: 24
+          connectionPoolSize: 64
+          database: 0
+          dnsMonitoringInterval: 5000
+        threads: 16
+        nettyThreads: 32
+        transportMode: "NIO"
   datasource:
     url: jdbc:mysql://101.43.244.29:3306/middle_ware?useSSL=false&autoReconnect=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,3 +60,4 @@ mybatis-plus:
     use-generated-keys: true
     default-executor-type: REUSE
     use-actual-param-name: true
+

@@ -28,8 +28,23 @@ public class TestController {
         map.put("data",messageData);
         map.put("current",current);
         User user = new User();
-        user.setUserName("测试发送对象");
+        user.setUserName("直出");
         rabbitTemplate.convertAndSend("TestDirectExchange", "123", user, new CorrelationData(UUID.randomUUID().toString()));
+        return "ok";
+    }
+
+    @GetMapping("/sendFanoutMessage")
+    public String sendFanoutMessage(){
+        String messageId = UUID.randomUUID().toString();
+        String messageData = "test FanoutMessage,hello!";
+        String current = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        Map<String,Object> map = new HashMap<>();
+        map.put("messageId",messageId);
+        map.put("data",messageData);
+        map.put("current",current);
+        User user = new User();
+        user.setUserName("扇出");
+        rabbitTemplate.convertAndSend("FanoutExchange", "123", user, new CorrelationData(UUID.randomUUID().toString()));
         return "ok";
     }
 }

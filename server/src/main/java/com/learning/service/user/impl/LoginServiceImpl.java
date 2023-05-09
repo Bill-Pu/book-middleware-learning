@@ -4,6 +4,8 @@ import com.learning.dao.UserMapper;
 import com.learning.domain.LoginUser;
 import com.learning.domain.ResponseResult;
 import com.learning.entity.User;
+import com.learning.service.rabbit.LoginMQPublisher;
+import com.learning.service.rabbit.RedissonTopic;
 import com.learning.service.user.LoginService;
 import com.learning.service.user.UserService;
 import com.learning.utils.JwtUtil;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
@@ -30,8 +33,12 @@ public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private RedisCache redisCache;
-
-
+    @Resource
+    private LoginMQPublisher loginMQPublisher;
+    @Resource
+    private RedissonTopic redissonTopic;
+    @Resource
+    private HttpServletRequest request;
     @Override
     public ResponseResult login(User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
@@ -49,6 +56,9 @@ public class LoginServiceImpl implements LoginService {
         //把token响应给前端
         HashMap<String,String> map = new HashMap<>();
         map.put("token",jwt);
+//        request.get
+        loginMQPublisher.publishLoginMessage(user1);
+        redissonTopic.publishMessage(user1);
         return new ResponseResult(200,"登陆成功",map);
     }
     @Override
