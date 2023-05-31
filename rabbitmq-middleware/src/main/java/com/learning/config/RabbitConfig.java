@@ -102,7 +102,8 @@ public class RabbitConfig {
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         //设置开启Mandatory,才能触发回调函数,无论消息推送结果怎么样都强制调用回调函数
         rabbitTemplate.setMandatory(true);
-
+//        rabbitTemplate.setReceiveTimeout();
+//        rabbitTemplate.setReplyTimeout();
         //此处设置重试template后，会再生产者发送消息的时候，调用该template中的调用链
         rabbitTemplate.setRetryTemplate(rabbitRetryTemplate());
         //CorrelationData correlationData, boolean b, String s
