@@ -2,3 +2,10 @@ server:
   port: 8090
   servlet:
     context-path: /middle/new
+  spring:
+    redis:
+      host: localhost
+      port: 6379  #可不配，因为底层默认值为6379
+      #    Auth: 1234
+      database: 0
+      timeout: 10000ms
