@@ -36,5 +36,6 @@ public class Test {
 //        List<Book> collect1 = books.stream().sorted(Comparator.comparing(Book::getAge).thenComparing()).collect(Collectors.toList());
     }
 
+    //变更
 }
 
