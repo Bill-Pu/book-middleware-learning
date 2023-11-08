@@ -19,5 +19,6 @@ public class Test {
     @org.junit.Test
     public void test1() throws Exception {
         publisher.publish();
+        System.out.println();
     }
 }
