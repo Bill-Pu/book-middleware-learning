@@ -20,6 +20,7 @@
         <module>rabbitmq-middleware</module>
         <module>leetcode</module>
         <module>new-spring-boot</module>
+        <module>test-for-maven</module>
     </modules>
 
     <properties>
