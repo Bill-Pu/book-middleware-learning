@@ -17,24 +17,28 @@ public class ExcelUpdater {
     private static final Map<String, Integer> eColumnMap = new HashMap<>();
     public static void main(String[] args) {
         //数量
-        fColumnMap.put("58吧唧", 5);
-        fColumnMap.put("75吧唧", 5);
-        fColumnMap.put("挂件", 5);
-        fColumnMap.put("明信片", 5);
-        fColumnMap.put("拍立得", 10);
-        fColumnMap.put("大立牌", 3);
-        fColumnMap.put("覆膜吧唧", 5);
+        fColumnMap.put("58吧唧", 2);
+        fColumnMap.put("75吧唧", 2);
+        fColumnMap.put("挂件", 2);
+        fColumnMap.put("明信片", 2);
+        fColumnMap.put("拍立得", 5);
+        fColumnMap.put("方吧唧", 2);
+        fColumnMap.put("椭圆吧唧", 2);
+        fColumnMap.put("大立牌", 2);
+        fColumnMap.put("覆膜吧唧", 2);
         //价格
         eColumnMap.put("58吧唧", 15);
         eColumnMap.put("75吧唧", 18);
         eColumnMap.put("挂件", 15);
         eColumnMap.put("明信片", 4);
         eColumnMap.put("拍立得", 6);
+        eColumnMap.put("方吧唧", 15);
+        eColumnMap.put("椭圆吧唧", 18);
         eColumnMap.put("覆膜吧唧", 12);
 
-        String sourceExcelPath = "/Users/Apple/Pictures/石家庄-廊坊-南宁一次铺货/模版.xlsx"; // 原始Excel路径
-        String newExcelPath = "/Users/Apple/Pictures/石家庄-廊坊-南宁一次铺货/新铺货记录.xlsx"; // 新的Excel路径
-        String folderPath = "/Users/Apple/Pictures/石家庄-廊坊-南宁一次铺货"; // 目录路径
+        String sourceExcelPath = "/Users/Apple/Pictures/配货六月14/模版.xlsx"; // 原始Excel路径
+        String newExcelPath = "/Users/Apple/Pictures/配货六月14/铺货记录.xlsx"; // 新的Excel路径
+        String folderPath = "/Users/Apple/Pictures/配货六月14"; // 目录路径
 
         createNewExcelWithHeaderAndUpdate(sourceExcelPath, folderPath, newExcelPath);
     }
