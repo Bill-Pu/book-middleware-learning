@@ -14,7 +14,7 @@ import java.util.*;
 /*处理铺货文件专用代码*/
 public class ExcelUpdater {
     private static final Map<String, Integer> fColumnMap = new HashMap<>();
-    private static final Map<String, Integer> eColumnMap = new HashMap<>();
+    private static final Map<String, Double> eColumnMap = new HashMap<>();
     public static void main(String[] args) {
         //数量
         fColumnMap.put("58吧唧", 2);
@@ -27,6 +27,7 @@ public class ExcelUpdater {
         fColumnMap.put("大立牌", 2);
         fColumnMap.put("覆膜吧唧", 2);
         //价格
+        /*
         eColumnMap.put("58吧唧", 15);
         eColumnMap.put("75吧唧", 18);
         eColumnMap.put("挂件", 15);
@@ -35,6 +36,25 @@ public class ExcelUpdater {
         eColumnMap.put("方吧唧", 15);
         eColumnMap.put("椭圆吧唧", 18);
         eColumnMap.put("覆膜吧唧", 12);
+
+         */
+        eColumnMap.put("58双闪", 14.88);
+        eColumnMap.put("58亮膜", 11.88);
+        eColumnMap.put("58覆膜", 10.0);
+        eColumnMap.put("75双闪", 16.88);
+        eColumnMap.put("捏捏吧唧", 15.0);
+        eColumnMap.put("普通透卡", 12.0);
+        eColumnMap.put("亚克力透卡", 15.0);
+        eColumnMap.put("小号亚克力转", 24.0);
+        eColumnMap.put("方卡", 10.0);
+        eColumnMap.put("方吧唧", 15.0);
+        eColumnMap.put("挂件18", 18.0);  // 可用作区分15元与18元的挂件
+        // eColumnMap.put("立牌32", 32);
+        // eColumnMap.put("立牌34", 34);
+        // eColumnMap.put("立牌28", 28);
+        // eColumnMap.put("立牌58", 58);
+        // eColumnMap.put("立牌25", 25);
+        // eColumnMap.put("立牌20", 20);
 
         String sourceExcelPath = "/Users/Apple/Pictures/配货六月14/模版.xlsx"; // 原始Excel路径
         String newExcelPath = "/Users/Apple/Pictures/配货六月14/铺货记录.xlsx"; // 新的Excel路径
@@ -101,7 +121,7 @@ public class ExcelUpdater {
                 row.createCell(3).setCellValue(parentFolderName);
 
                 // 填充 E 列（数量）
-                int eValue = eColumnMap.containsKey(parentFolderName) ? eColumnMap.get(parentFolderName) : 0;
+                Double eValue = eColumnMap.containsKey(parentFolderName) ? eColumnMap.get(parentFolderName) : 0.0;
                 row.createCell(4).setCellValue(eValue);
 
                 // 填充 F 列（数量）
