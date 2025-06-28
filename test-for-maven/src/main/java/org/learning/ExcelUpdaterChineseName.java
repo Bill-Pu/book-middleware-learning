@@ -2,18 +2,23 @@ package org.learning;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFPicture;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ExcelUpdater {
+public class ExcelUpdaterChineseName {
 
     private static final Map<String, Integer> fColumnMap = new HashMap<>();
     private static final Map<String, Double> eColumnMap = new HashMap<>();
@@ -127,6 +132,12 @@ public class ExcelUpdater {
                 Double eValue = eColumnMap.getOrDefault(parentFolderName, 0.0);
                 int fValue = fColumnMap.getOrDefault(parentFolderName, 0);
 
+                // ✅ 如果文件名包含中文，则将其写入 C 列（不带扩展名）
+                String fileNameWithoutExt = file.getName().replaceFirst("[.][^.]+$", ""); // 去除扩展名
+                if (fileNameWithoutExt.matches(".*[\\u4e00-\\u9fa5]+.*")) {
+                    row.createCell(2).setCellValue(fileNameWithoutExt); // C列是索引2
+                }
+
                 row.createCell(3).setCellValue(parentFolderName); // D列
                 row.createCell(4).setCellValue(eValue);           // E列
                 row.createCell(5).setCellValue(fValue);           // F列
@@ -155,6 +166,7 @@ public class ExcelUpdater {
                 System.out.println("插入图片成功，E列=" + eValue + "，F列=" + fValue);
                 rowIndex++;
             }
+
 
             try (FileOutputStream fos = new FileOutputStream(newExcelPath)) {
                 newWorkbook.write(fos);
