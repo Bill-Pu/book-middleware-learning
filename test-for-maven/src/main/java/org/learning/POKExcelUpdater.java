@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ExcelUpdater {
+public class POKExcelUpdater {
 
     private static final Map<String, Integer> fColumnMap = new HashMap<>();
     private static final Map<String, Double> eColumnMap = new HashMap<>();

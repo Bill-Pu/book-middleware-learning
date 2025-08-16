@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ExcelUpdater {
+public class POKExcelAddImage {
 
     private static final Map<String, Integer> fColumnMap = new HashMap<>();
     private static final Map<String, Double> eColumnMap = new HashMap<>();
@@ -90,7 +90,7 @@ public class ExcelUpdater {
         eColumnMap.put("24元亚克力砖", 24.0);
         eColumnMap.put("32元亚克力砖", 32.0);
 
-        String sourceExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/模版.xlsx";
+        String sourceExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/pekopeko寄售表模版.xlsx";
         String newExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/铺货记录.xlsx";
         String folderPath = "/Users/Apple/Pictures/pokNewYAOYAO";
 
@@ -130,13 +130,15 @@ public class ExcelUpdater {
 
             System.out.println("找到图片数量: " + imageFiles.size());
 
-            int rowIndex = 1;
+            // 从第8行开始写
+            int rowIndex = 7;
             Drawing<?> drawing = newSheet.createDrawingPatriarch();
 
             double targetHeightInPoints = 1.22 * 72;
             double targetWidthInPoints = 1.0 * 72;
 
-            newSheet.setColumnWidth(6, 13 * 256);
+            // 设置 A 列宽度
+            newSheet.setColumnWidth(0, 13 * 256);
 
             for (File file : imageFiles) {
                 Row row = newSheet.createRow(rowIndex);
@@ -150,6 +152,7 @@ public class ExcelUpdater {
                 Double eValue = eColumnMap.getOrDefault(parentFolderName, 0.0);
                 int fValue = fColumnMap.getOrDefault(parentFolderName, 0);
 
+                // D E F 列还是原来的 3、4、5
                 row.createCell(3).setCellValue(parentFolderName);
                 row.createCell(4).setCellValue(eValue);
                 row.createCell(5).setCellValue(fValue);
@@ -168,7 +171,7 @@ public class ExcelUpdater {
                 int pictureIdx = newWorkbook.addPicture(bytes, pictureType);
 
                 XSSFClientAnchor anchor = new XSSFClientAnchor();
-                anchor.setCol1(6);
+                anchor.setCol1(0); // 改到 A 列
                 anchor.setRow1(rowIndex);
                 anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
 
