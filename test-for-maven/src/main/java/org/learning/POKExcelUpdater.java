@@ -4,11 +4,7 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFDrawing;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFPicture;
+import org.apache.poi.xssf.usermodel.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,6 +25,7 @@ public class POKExcelUpdater {
     public static void main(String[] args) {
         System.out.println("程序开始执行...");
 
+        // ====== 配置 E/F 列映射 ======
         fColumnMap.put("14x21大色纸", 5);
         fColumnMap.put("15元立牌", 5);
         fColumnMap.put("20元立牌", 5);
@@ -36,6 +33,7 @@ public class POKExcelUpdater {
         fColumnMap.put("28元立牌", 5);
         fColumnMap.put("32元立牌", 5);
         fColumnMap.put("36元立牌", 5);
+        fColumnMap.put("39元立牌", 5);
         fColumnMap.put("45元立牌", 5);
         fColumnMap.put("58双闪吧唧", 10);
         fColumnMap.put("75双闪吧唧", 10);
@@ -68,6 +66,7 @@ public class POKExcelUpdater {
         eColumnMap.put("28元立牌", 28.0);
         eColumnMap.put("32元立牌", 32.0);
         eColumnMap.put("36元立牌", 36.0);
+        eColumnMap.put("39元立牌", 39.0);
         eColumnMap.put("45元立牌", 45.0);
         eColumnMap.put("58双闪吧唧", 15.0);
         eColumnMap.put("75双闪吧唧", 16.0);
@@ -90,60 +89,45 @@ public class POKExcelUpdater {
         eColumnMap.put("24元亚克力砖", 24.0);
         eColumnMap.put("32元亚克力砖", 32.0);
 
-        String sourceExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/模版.xlsx";
-        String newExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/铺货记录.xlsx";
-        String folderPath = "/Users/Apple/Pictures/pokNewYAOYAO";
+        String templateExcelPath = "/Users/Apple/Pictures/pok透卡/模版.xlsx";
+        String folderPath = "/Users/Apple/Pictures/pok透卡";
+        String newExcelPath = "/Users/Apple/Pictures/pok透卡/铺货记录.xlsx";
 
-        createNewExcelWithHeaderAndUpdate(sourceExcelPath, folderPath, newExcelPath);
+        appendToTemplateExcel(templateExcelPath, folderPath, newExcelPath);
 
         System.out.println("程序执行结束。");
     }
 
-    public static void createNewExcelWithHeaderAndUpdate(String sourceExcelPath, String folderPath, String newExcelPath) {
-        try (FileInputStream fis = new FileInputStream(sourceExcelPath);
-             Workbook sourceWorkbook = new XSSFWorkbook(fis);
-             Workbook newWorkbook = new XSSFWorkbook()) {
+    public static void appendToTemplateExcel(String templateExcelPath, String folderPath, String newExcelPath) {
+        try (FileInputStream fis = new FileInputStream(templateExcelPath);
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
-            System.out.println("读取源 Excel 文件: " + sourceExcelPath);
+            System.out.println("读取模版 Excel 文件: " + templateExcelPath);
 
-            Sheet sourceSheet = sourceWorkbook.getSheetAt(0);
-            Sheet newSheet = newWorkbook.createSheet("Sheet1");
-
-            Row sourceHeaderRow = sourceSheet.getRow(0);
-            if (sourceHeaderRow == null) {
-                System.out.println("源 Excel 表头为空！");
-                return;
-            }
-
-            Row newHeaderRow = newSheet.createRow(0);
-            for (int i = 0; i < sourceHeaderRow.getLastCellNum(); i++) {
-                Cell sourceCell = sourceHeaderRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                Cell newCell = newHeaderRow.createCell(i);
-                newCell.setCellValue(sourceCell.toString());
-            }
+            Sheet sheet = workbook.getSheetAt(0);
+            Drawing<?> drawing = sheet.createDrawingPatriarch();
 
             List<File> imageFiles = getImageFilesInSubfolders(folderPath);
             if (imageFiles.isEmpty()) {
                 System.out.println("在目录中没有找到支持格式的图片文件。");
                 return;
             }
-
             System.out.println("找到图片数量: " + imageFiles.size());
 
-            int rowIndex = 1;
-            Drawing<?> drawing = newSheet.createDrawingPatriarch();
-
-            double targetHeightInPoints = 1.22 * 72;
+            int rowIndex = 7; // === 从第8行开始写（索引从0开始） ===
+            double targetHeightInPoints = 88; // 行高
             double targetWidthInPoints = 1.0 * 72;
 
-            newSheet.setColumnWidth(6, 13 * 256);
+            sheet.setColumnWidth(6, 13 * 256); // 调整图片列宽
 
             for (File file : imageFiles) {
-                Row row = newSheet.createRow(rowIndex);
-                row.setHeightInPoints(88);
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) {
+                    row = sheet.createRow(rowIndex);
+                }
+                row.setHeightInPoints((float) targetHeightInPoints);
 
                 String parentFolderName = file.getParentFile().getName().trim().replaceAll("[^\\u4e00-\\u9fa5a-zA-Z0-9]", "");
-
                 System.out.println("处理图片: " + file.getAbsolutePath());
                 System.out.println("识别为分类: " + parentFolderName);
 
@@ -156,8 +140,7 @@ public class POKExcelUpdater {
 
                 BufferedImage correctedImage = correctOrientation(file);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                String lowerName = file.getName().toLowerCase();
-                if (lowerName.endsWith(".png")) {
+                if (file.getName().toLowerCase().endsWith(".png")) {
                     ImageIO.write(correctedImage, "png", baos);
                 } else {
                     ImageIO.write(correctedImage, "jpg", baos);
@@ -165,7 +148,7 @@ public class POKExcelUpdater {
                 byte[] bytes = baos.toByteArray();
 
                 int pictureType = getPictureType(file.getName());
-                int pictureIdx = newWorkbook.addPicture(bytes, pictureType);
+                int pictureIdx = workbook.addPicture(bytes, pictureType);
 
                 XSSFClientAnchor anchor = new XSSFClientAnchor();
                 anchor.setCol1(6);
@@ -176,28 +159,26 @@ public class POKExcelUpdater {
 
                 double widthScale = targetWidthInPoints / correctedImage.getWidth();
                 double heightScale = targetHeightInPoints / correctedImage.getHeight();
-
                 picture.resize(widthScale, heightScale);
 
                 System.out.println("插入图片成功，E列=" + eValue + "，F列=" + fValue);
+
                 rowIndex++;
             }
 
             try (FileOutputStream fos = new FileOutputStream(newExcelPath)) {
-                newWorkbook.write(fos);
+                workbook.write(fos);
                 System.out.println("成功保存新 Excel 文件: " + newExcelPath);
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("发生异常: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     private static int getPictureType(String fileName) {
-        String lower = fileName.toLowerCase();
-        if (lower.endsWith(".png")) return Workbook.PICTURE_TYPE_PNG;
-        else return Workbook.PICTURE_TYPE_JPEG;
+        return fileName.toLowerCase().endsWith(".png") ? Workbook.PICTURE_TYPE_PNG : Workbook.PICTURE_TYPE_JPEG;
     }
 
     private static List<File> getImageFilesInSubfolders(String folderPath) {
@@ -253,11 +234,10 @@ public class POKExcelUpdater {
         }
 
         BufferedImage newImage = new BufferedImage(
-                orientation == 6 || orientation == 8 ? height : width,
-                orientation == 6 || orientation == 8 ? width : height,
-                image.getType()
+                (orientation == 6 || orientation == 8) ? height : width,
+                (orientation == 6 || orientation == 8) ? width : height,
+                BufferedImage.TYPE_INT_RGB
         );
-
         Graphics2D g2d = newImage.createGraphics();
         g2d.drawImage(image, transform, null);
         g2d.dispose();
