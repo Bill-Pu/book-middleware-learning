@@ -1,19 +1,26 @@
-package org.learning;
+package org.learning.excelApp;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFPicture;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,72 +29,85 @@ public class POKExcelUpdater {
     private static final Map<String, Integer> fColumnMap = new HashMap<>();
     private static final Map<String, Double> eColumnMap = new HashMap<>();
 
+    public static void appendToTemplateExcel(
+            String templateExcelPath,
+            String folderPath,
+            String newExcelPath,
+            Map<String, Double> eColumnMap,
+            Map<String, Integer> fColumnMap
+    ) {
+        // 原逻辑保持不变，只把 eColumnMap / fColumnMap 换成传入的
+    }
+
     public static void main(String[] args) {
+
         System.out.println("程序开始执行...");
+        if (eColumnMap.isEmpty()||fColumnMap.isEmpty()){
+            // ====== 配置 E/F 列映射 ======
+            fColumnMap.put("14x21大色纸", 3);
+            fColumnMap.put("15元立牌", 3);
+            fColumnMap.put("20元立牌", 3);
+            fColumnMap.put("25元立牌", 3);
+            fColumnMap.put("28元立牌", 3);
+            fColumnMap.put("32元立牌", 3);
+            fColumnMap.put("36元立牌", 3);
+            fColumnMap.put("39元立牌", 3);
+            fColumnMap.put("45元立牌", 3);
+            fColumnMap.put("58双闪吧唧", 5);
+            fColumnMap.put("75双闪吧唧", 5);
+            fColumnMap.put("方吧唧", 5);
+            fColumnMap.put("方卡", 6);
+            fColumnMap.put("覆膜吧唧", 5);
+            fColumnMap.put("捏捏吧唧", 10);
+            fColumnMap.put("挂件", 5);
+            fColumnMap.put("像素人挂件", 5);
+            fColumnMap.put("镭射票", 10);
+            fColumnMap.put("明信片", 10);
+            fColumnMap.put("拍立得", 10);
+            fColumnMap.put("色纸", 3);
+            fColumnMap.put("椭圆吧唧", 5);
+            fColumnMap.put("瓶盖吧唧", 4);
+            fColumnMap.put("像素人立牌", 3);
+            fColumnMap.put("亚克力棒棒糖", 10);
+            fColumnMap.put("亚克力双闪色纸", 5);
+            fColumnMap.put("亚克力透卡", 3);
+            fColumnMap.put("陶瓷杯垫", 10);
+            fColumnMap.put("亚克力圆盘", 6);
+            fColumnMap.put("24元亚克力砖", 3);
+            fColumnMap.put("32元亚克力砖", 1);
 
-        // ====== 配置 E/F 列映射 ======
-        fColumnMap.put("14x21大色纸", 3);
-        fColumnMap.put("15元立牌", 3);
-        fColumnMap.put("20元立牌", 3);
-        fColumnMap.put("25元立牌", 3);
-        fColumnMap.put("28元立牌", 3);
-        fColumnMap.put("32元立牌", 3);
-        fColumnMap.put("36元立牌", 3);
-        fColumnMap.put("39元立牌", 3);
-        fColumnMap.put("45元立牌", 3);
-        fColumnMap.put("58双闪吧唧", 5);
-        fColumnMap.put("75双闪吧唧", 5);
-        fColumnMap.put("方吧唧", 5);
-        fColumnMap.put("方卡", 6);
-        fColumnMap.put("覆膜吧唧", 5);
-        fColumnMap.put("捏捏吧唧", 10);
-        fColumnMap.put("挂件", 5);
-        fColumnMap.put("像素人挂件", 5);
-        fColumnMap.put("镭射票", 10);
-        fColumnMap.put("明信片", 10);
-        fColumnMap.put("拍立得", 10);
-        fColumnMap.put("色纸", 3);
-        fColumnMap.put("椭圆吧唧", 5);
-        fColumnMap.put("瓶盖吧唧", 4);
-        fColumnMap.put("像素人立牌", 3);
-        fColumnMap.put("亚克力棒棒糖", 10);
-        fColumnMap.put("亚克力双闪色纸", 5);
-        fColumnMap.put("亚克力透卡", 3);
-        fColumnMap.put("陶瓷杯垫", 10);
-        fColumnMap.put("亚克力圆盘", 6);
-        fColumnMap.put("24元亚克力砖", 3);
-        fColumnMap.put("32元亚克力砖", 1);
+            eColumnMap.put("14x21大色纸", 20.0);
+            eColumnMap.put("陶瓷杯垫", 15.0);
+            eColumnMap.put("15元立牌", 15.0);
+            eColumnMap.put("20元立牌", 20.0);
+            eColumnMap.put("25元立牌", 25.0);
+            eColumnMap.put("28元立牌", 28.0);
+            eColumnMap.put("32元立牌", 32.0);
+            eColumnMap.put("36元立牌", 36.0);
+            eColumnMap.put("39元立牌", 39.0);
+            eColumnMap.put("45元立牌", 45.0);
+            eColumnMap.put("58双闪吧唧", 15.0);
+            eColumnMap.put("75双闪吧唧", 16.0);
+            eColumnMap.put("方吧唧", 15.0);
+            eColumnMap.put("方卡", 10.0);
+            eColumnMap.put("覆膜吧唧", 10.0);
+            eColumnMap.put("挂件", 15.0);
+            eColumnMap.put("像素人挂件", 15.0);
+            eColumnMap.put("镭射票", 0.0);
+            eColumnMap.put("明信片", 4.0);
+            eColumnMap.put("拍立得", 6.0);
+            eColumnMap.put("色纸", 18.0);
+            eColumnMap.put("椭圆吧唧", 18.0);
+            eColumnMap.put("瓶盖吧唧", 6.9);
+            eColumnMap.put("像素人立牌", 18.0);
+            eColumnMap.put("亚克力棒棒糖", 18.0);
+            eColumnMap.put("亚克力双闪色纸", 20.0);
+            eColumnMap.put("亚克力透卡", 15.0);
+            eColumnMap.put("亚克力圆盘", 0.0);
+            eColumnMap.put("24元亚克力砖", 24.0);
+            eColumnMap.put("32元亚克力砖", 32.0);
+        }
 
-        eColumnMap.put("14x21大色纸", 20.0);
-        eColumnMap.put("陶瓷杯垫", 15.0);
-        eColumnMap.put("15元立牌", 15.0);
-        eColumnMap.put("20元立牌", 20.0);
-        eColumnMap.put("25元立牌", 25.0);
-        eColumnMap.put("28元立牌", 28.0);
-        eColumnMap.put("32元立牌", 32.0);
-        eColumnMap.put("36元立牌", 36.0);
-        eColumnMap.put("39元立牌", 39.0);
-        eColumnMap.put("45元立牌", 45.0);
-        eColumnMap.put("58双闪吧唧", 15.0);
-        eColumnMap.put("75双闪吧唧", 16.0);
-        eColumnMap.put("方吧唧", 15.0);
-        eColumnMap.put("方卡", 10.0);
-        eColumnMap.put("覆膜吧唧", 10.0);
-        eColumnMap.put("挂件", 15.0);
-        eColumnMap.put("像素人挂件", 15.0);
-        eColumnMap.put("镭射票", 0.0);
-        eColumnMap.put("明信片", 4.0);
-        eColumnMap.put("拍立得", 6.0);
-        eColumnMap.put("色纸", 18.0);
-        eColumnMap.put("椭圆吧唧", 18.0);
-        eColumnMap.put("瓶盖吧唧", 6.9);
-        eColumnMap.put("像素人立牌", 18.0);
-        eColumnMap.put("亚克力棒棒糖", 18.0);
-        eColumnMap.put("亚克力双闪色纸", 20.0);
-        eColumnMap.put("亚克力透卡", 15.0);
-        eColumnMap.put("亚克力圆盘", 0.0);
-        eColumnMap.put("24元亚克力砖", 24.0);
-        eColumnMap.put("32元亚克力砖", 32.0);
 
         String templateExcelPath = "/Users/Apple/Pictures/pokNew-八月27/模版.xlsx";
         String folderPath = "/Users/Apple/Pictures/pokNew-八月27";
