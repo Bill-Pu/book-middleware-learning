@@ -41,13 +41,13 @@ public class ExcelUpdater {
         fColumnMap.put("75双闪吧唧", 10);
         fColumnMap.put("方吧唧", 10);
         fColumnMap.put("方卡", 6);
-        fColumnMap.put("覆膜吧唧", 10);
+        fColumnMap.put("覆膜吧唧", 3);
         fColumnMap.put("捏捏吧唧", 10);
         fColumnMap.put("挂件", 10);
         fColumnMap.put("像素人挂件", 10);
         fColumnMap.put("镭射票", 10);
         fColumnMap.put("明信片", 10);
-        fColumnMap.put("拍立得", 10);
+        fColumnMap.put("拍立得", 5);
         fColumnMap.put("色纸", 5);
         fColumnMap.put("椭圆吧唧", 10);
         fColumnMap.put("瓶盖吧唧", 4);
@@ -90,9 +90,9 @@ public class ExcelUpdater {
         eColumnMap.put("24元亚克力砖", 24.0);
         eColumnMap.put("32元亚克力砖", 32.0);
 
-        String sourceExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/模版.xlsx";
-        String newExcelPath = "/Users/Apple/Pictures/pokNewYAOYAO/铺货记录.xlsx";
-        String folderPath = "/Users/Apple/Pictures/pokNewYAOYAO";
+        String sourceExcelPath = "/Users/Apple/Pictures/pok模版八家店/模版.xlsx";
+        String newExcelPath = "/Users/Apple/Pictures/pok模版八家店/铺货记录.xlsx";
+        String folderPath = "/Users/Apple/Pictures/pok模版八家店";
 
         createNewExcelWithHeaderAndUpdate(sourceExcelPath, folderPath, newExcelPath);
 
