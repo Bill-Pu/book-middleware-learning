@@ -21,6 +21,7 @@
         <module>leetcode</module>
         <module>new-spring-boot</module>
         <module>test-for-maven</module>
+        <module>test</module>
     </modules>
 
     <properties>
