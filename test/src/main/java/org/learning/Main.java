@@ -1,5 +1,7 @@
 package org.learning;
 
+import java.util.HashMap;
+
 /**
  * @author puyb
  * @date 2025/11/1
@@ -17,5 +19,6 @@ public class Main {
             // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
             System.out.println("i = " + i);
         }
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
     }
 }
