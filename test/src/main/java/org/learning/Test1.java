@@ -65,4 +65,9 @@ public class Test1 {
                 person, person2, person3, person4, person5
         ).stream().collect(Collectors.toMap(Person::getName,p -> p));
     }
+    @Test
+    public void test4(){
+
+    }
+
 }

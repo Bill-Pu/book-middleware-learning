@@ -22,6 +22,7 @@
         <module>new-spring-boot</module>
         <module>test-for-maven</module>
         <module>test</module>
+        <module>test-new</module>
     </modules>
 
     <properties>
