@@ -28,6 +28,10 @@ public class TestController {
             }
         });
         objects.offer(1);
+        objects.offer(2);
+        objects.offer(3);
+        objects.offer(4);
+        objects.offer(5);
         HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
         return "test";
     }

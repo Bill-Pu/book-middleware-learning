@@ -23,6 +23,8 @@
         <module>test-for-maven</module>
         <module>test</module>
         <module>test-new</module>
+        <module>jdk21-test</module>
+        <module>kafka-middleware</module>
     </modules>
 
     <properties>
